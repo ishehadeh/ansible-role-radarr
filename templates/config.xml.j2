@@ -1,0 +1,12 @@
+<Config>
+  <LogLevel>{{ radarr_config.log_level | default('info') }}</LogLevel>
+  <UrlBase>{{ radarr_config.url_base | default('') }}</UrlBase>
+  <LaunchBrowser>{{ radarr_config.launch_browser | default('False') }}</LaunchBrowser>
+  <Port>{{ radarr_config.port | default(7878) }}</Port>
+  <UpdateMechanism>{{ radarr_config.update_mechanism | default('External') }}</UpdateMechanism>
+  <AuthenticationMethod>{{ radarr_config.authentication_method | default('None') }}</AuthenticationMethod>
+  <Branch>{{ radarr_config.branch | default('master') }}</Branch>
+{% if 'api_key' in radarr_config -%}
+  <ApiKey>{{ radarr_config.api_key }}</ApiKey>
+{%- endif %}
+</Config>

@@ -1,0 +1,42 @@
+---
+# The `radarr` binary doesn't report its version, so after install install.yml writes the version it just downloaded to a file
+- name: Read cached Radarr version
+  ansible.builtin.slurp:
+    src: "{{radarr_version_file}}"
+  register: radarr_current_version_slurp
+  ignore_errors: true
+
+- name: Set radarr_current_version
+  ansible.builtin.set_fact:
+    radarr_current_version: "{{ 'content' in radarr_current_version_slurp and (radarr_current_version_slurp['content'] | b64decode) or None }}"
+- debug: var=radarr_current_version
+
+- name: Install Radarr
+  when: radarr_state != "absent" and radarr_current_version != radarr_version  
+  import_tasks: install.yml
+
+- name: Install Radarr config
+  ansible.builtin.template:
+    src: config.xml.j2
+    dest: "{{radarr_config_dir}}/Radarr/config.xml"
+    owner: "{{ radarr_user }}"
+    group: "{{ radarr_group }}"
+    mode: "0600"
+  when: radarr_state != "absent"
+  notify: Restart Radarr
+
+- name: Stat Radarr systemd service
+  ansible.builtin.stat:
+    path: "{{radarr_systemd_service_dir}}/radarr.service"
+  register: radarr_service
+
+- name: Update Radarr systemd state
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    name: radarr.service
+    state: "{{ radarr_state_to_systemd_state[radarr_state] }}"
+  when: radarr_service.stat.exists and radarr_state in radarr_state_to_systemd_state
+
+- name: Uninstall Radarr
+  when: radarr_state == "absent" 
+  import_tasks: uninstall.yml

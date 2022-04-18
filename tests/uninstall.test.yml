@@ -1,0 +1,8 @@
+---
+- name: Test Radarr Uninstall
+  hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - role: radarr
+      radarr_state: absent

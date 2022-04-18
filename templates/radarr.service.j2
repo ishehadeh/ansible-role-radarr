@@ -1,0 +1,18 @@
+[Unit]
+Description=Radarr
+After=network.target
+
+[Service]
+SyslogIdentifier=radarr
+Restart=always
+RestartSec=5
+Type=simple
+User={{ radarr_user | quote }}
+Group={{ radarr_group | quote }}
+WorkingDirectory={{ radarr_bin_dir + "/Radarr" | quote }}
+ExecStart={{ radarr_bin_dir + "/Radarr/Radarr" | quote }}
+TimeoutStopSec=30
+Environment={{"XDG_CONFIG_HOME=" + radarr_config_dir | quote}}
+
+[Install]
+WantedBy=multi-user.targe

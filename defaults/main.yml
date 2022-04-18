@@ -1,0 +1,40 @@
+---
+radarr_version: latest
+
+# Base directory for configs, equivalent to ~/.config
+# Actual radarr configs are kept in {{radarr_config_dir}}/Radarr
+# this directory is NOT removed on uninstall
+radarr_config_dir: /opt/radarr
+
+# location where the radarr release tarball is installed
+# the actually binaries are in {{radarr_bin_dir}}/Radarr
+# WARNING: this directory is removed on uninstall
+radarr_bin_dir: /opt/radarr
+
+radarr_user: "{{ ansible_user }}"
+radarr_group: "{{ ansible_user }}"
+
+# values: absent    (uninstalled)
+#         stopped   (installed, not running)
+#         started   (installed, running)
+#         restarted (installed, will be restarted)
+radarr_state: absent
+
+radarr_config:
+  port: 7878
+
+  log_level: info
+
+  launch_browser: false
+  
+  # values: None, Basic, Forms
+  authentication_method: "None"
+
+  # One of:
+  #   BuiltIn
+  #   Script
+  #   External
+  #   Apt
+  #   Docker
+  update_mechanism: External
+  branch: master

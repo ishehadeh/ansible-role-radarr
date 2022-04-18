@@ -1,0 +1,13 @@
+---
+- name: Test Radarr Install
+  hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - role: radarr
+      radarr_state: started
+      radarr_config:
+        port: 6868
+  tasks:
+    - name: Check radarr.service status
+      shell: systemctl status radarr

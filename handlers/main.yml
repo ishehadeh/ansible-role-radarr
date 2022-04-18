@@ -1,0 +1,7 @@
+---
+- name: Restart Radarr
+  ansible.builtin.systemd:
+    daemon_reload: yes
+    name: radarr.service
+    state: restarted
+  when: radarr_state == "started"

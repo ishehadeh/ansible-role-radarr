@@ -1,0 +1,15 @@
+---
+- name: Remove Radarr release
+  ansible.builtin.file:
+    path: "{{radarr_bin_dir}}"
+    state: absent
+
+- name: Remove Radarr config directory
+  ansible.builtin.file:
+    path: "{{radarr_config_dir}}/Radarr"
+    state: absent
+
+- name: Remove Radarr systemd service
+  ansible.builtin.file:
+    path: "{{radarr_systemd_service_dir}}/radarr.service"
+    state: absent

@@ -1,0 +1,28 @@
+---
+radarr_state_to_systemd_state:
+  absent: stopped
+  stopped: stopped
+  started: started
+  restart: restarted
+
+radarr_release_arch: |-
+  {%- if ansible_architecture == 'x86_64' -%}
+    x64
+  {%- elif ansible_architecture == 'aarch64' -%}
+    arm64
+  {%- elif ansible_architecture.startswith('armv') -%}
+    arm
+  {%- else -%}
+    ERROR
+  {%- endif -%}
+
+radarr_version_file: "{{radarr_bin_dir}}/.radarr.version"
+
+radarr_release_url: |-
+  {%- if radarr_version == "latest" -%}
+  https://github.com/Radarr/Radarr/releases/latest/download/{{radarr_release_filename}}
+  {%- else -%}
+  https://github.com/Radarr/Radarr/releases/download/v{{radarr_version}}/{{radarr_release_filename}}
+  {%- endif -%}
+
+radarr_systemd_service_dir: /etc/systemd/system
