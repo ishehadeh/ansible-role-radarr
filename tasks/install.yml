@@ -12,7 +12,7 @@
     owner: "{{ radarr_user }}"
     group: "{{ radarr_group }}"
     state: directory
-- debug: var=radarr_release_details.json.name
+
 - name: Install Radarr
   ansible.builtin.unarchive:
     src: |-

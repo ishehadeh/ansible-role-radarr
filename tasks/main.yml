@@ -9,7 +9,6 @@
 - name: Set radarr_current_version
   ansible.builtin.set_fact:
     radarr_current_version: "{{ 'content' in radarr_current_version_slurp and (radarr_current_version_slurp['content'] | b64decode) or None }}"
-- debug: var=radarr_current_version
 
 - name: Install Radarr
   when: radarr_state != "absent" and radarr_current_version != radarr_version  
